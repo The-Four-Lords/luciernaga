@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://World.gd" type="Script" id=1]
+[ext_resource path="res://roca.tscn" type="PackedScene" id=2]
+[ext_resource path="res://spaceshooter/Backgrounds/black.png" type="Texture" id=3]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Interfaz.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Joystick.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Curve2D" id=1]
+
+bake_interval = 5.0
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0.384857, -2.05782, 0, 0, 0, 0, 639.993, -0.139858, 0, 0, 0, 0, 640.181, 960.018, 0, 0, 0, 0, 0.0973511, 959.477, 0, 0, 0, 0, 0.384857, -2.05782 )
+}
+
+[node name="World" type="Node" index="0"]
+
+script = ExtResource( 1 )
+Roca = ExtResource( 2 )
+
+[node name="Fondo" type="TextureRect" parent="." index="0"]
+
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -320.0
+margin_top = -480.0
+margin_right = 320.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 2
+_sections_unfolded = [ "Rect" ]
+
+[node name="Player" parent="." index="1" instance=ExtResource( 4 )]
+
+velocity = 20
+
+[node name="RocaTimer" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = false
+autostart = false
+
+[node name="ScoreTimer" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[node name="InicioTimer" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="PosicionInicial" type="Position2D" parent="." index="5"]
+
+position = Vector2( 320, 480 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="PasilloEntrada" type="Path2D" parent="." index="6"]
+
+self_modulate = Color( 0.5, 0.6, 1, 0.7 )
+curve = SubResource( 1 )
+
+[node name="PositionRoca" type="PathFollow2D" parent="PasilloEntrada" index="0"]
+
+position = Vector2( 0.384857, -2.05782 )
+rotation = 0.00299865
+offset = 0.0
+h_offset = 0.0
+v_offset = 0.0
+rotate = true
+cubic_interp = true
+loop = true
+lookahead = 4.0
+
+[node name="Interfaz" parent="." index="7" instance=ExtResource( 5 )]
+
+[node name="Joystick" parent="." index="8" instance=ExtResource( 6 )]
+
+[connection signal="golpe" from="Player" to="." method="game_over"]
+
+[connection signal="timeout" from="RocaTimer" to="." method="_on_RocaTimer_timeout"]
+
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
+
+[connection signal="timeout" from="InicioTimer" to="." method="_on_InicioTimer_timeout"]
+
+[connection signal="iniciar_juego" from="Interfaz" to="." method="new_game"]
+
+

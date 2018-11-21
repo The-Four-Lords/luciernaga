@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://roca.gd" type="Script" id=1]
+[ext_resource path="res://spaceshooter/PNG/Meteors/meteorBrown_big1.png" type="Texture" id=2]
+[ext_resource path="res://spaceshooter/PNG/Meteors/meteorGrey_big2.png" type="Texture" id=3]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "marron",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "gris",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+
+custom_solver_bias = 0.0
+radius = 38.3318
+height = 0.833694
+
+[node name="roca" type="RigidBody2D"]
+
+position = Vector2( 282.262, 138.626 )
+input_pickable = false
+collision_layer = 0
+collision_mask = 1
+mode = 0
+mass = 1.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 0.0
+custom_integrator = false
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "Transform" ]
+__meta__ = {
+"_edit_group_": true
+}
+vel_min = 150
+vel_max = 250
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="." index="0"]
+
+frames = SubResource( 1 )
+animation = "marron"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+position = Vector2( -2.12525, -1.46542 )
+scale = Vector2( 1.13957, 1.0292 )
+shape = SubResource( 2 )
+
+[node name="visivility" type="VisibilityNotifier2D" parent="." index="2"]
+
+position = Vector2( 0.429276, -2.57568 )
+rect = Rect2( -10, -10, 20, 20 )
+
+[connection signal="screen_exited" from="visivility" to="." method="_on_visivility_screen_exited"]
+
+
